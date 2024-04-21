@@ -2,21 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// 13 objektai buvo nepriskirti
 public class PowerUps : MonoBehaviour
 {
     public GameObject[] powerups;
     void Start()
     {
-        SpawnPowerup();
+        StartCoroutine(SpawnPowerup()); // 18 Coroutine
     }
 
     IEnumerator SpawnPowerup()
     {
-        while (true)
+        yield return new WaitForSeconds(2);
+
+        if (powerups.Length > 0) // 16 infinite loop
         {
-            yield return new WaitForSeconds(2);
-            int randomIndex = Random.Range(-5, powerups.Length + 5);
-            Instantiate(powerups[randomIndex], new Vector3(Random.Range(-10, 10), Random.Range(-10, 10), 0), Quaternion.identity);
+            int randomIndex = Random.Range(0, powerups.Length); // 17 index out of bounds 
+            Vector3 spawnPosition = new Vector3(Random.Range(-10, 10), Random.Range(-10, 10), 0);
+            Instantiate(powerups[randomIndex], spawnPosition, Quaternion.identity);
         }
     }
 }
